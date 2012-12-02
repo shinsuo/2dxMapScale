@@ -202,6 +202,8 @@
 		544B78CB166B6B3300FC7215 /* HttpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B78CA166B6B3300FC7215 /* HttpClient.cpp */; };
 		544B78D4166B6B3300FC7215 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B78D3166B6B3300FC7215 /* AppDelegate.cpp */; };
 		544B78D7166B6B3300FC7215 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B78D6166B6B3300FC7215 /* HelloWorldScene.cpp */; };
+		544B78DF166B6B8200FC7215 /* tilemap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 544B78DD166B6B8200FC7215 /* tilemap.tmx */; };
+		544B78E0166B6B8200FC7215 /* tiles.png in Resources */ = {isa = PBXBuildFile; fileRef = 544B78DE166B6B8200FC7215 /* tiles.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -634,6 +636,8 @@
 		544B78D3166B6B3300FC7215 /* AppDelegate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		544B78D5166B6B3300FC7215 /* HelloWorldScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HelloWorldScene.h; path = Classes/HelloWorldScene.h; sourceTree = "<group>"; };
 		544B78D6166B6B3300FC7215 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HelloWorldScene.cpp; path = Classes/HelloWorldScene.cpp; sourceTree = "<group>"; };
+		544B78DD166B6B8200FC7215 /* tilemap.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = tilemap.tmx; path = Resources/tilemap.tmx; sourceTree = "<group>"; };
+		544B78DE166B6B8200FC7215 /* tiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tiles.png; path = Resources/tiles.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -703,6 +707,8 @@
 		544B7646166B6B3000FC7215 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				544B78DD166B6B8200FC7215 /* tilemap.tmx */,
+				544B78DE166B6B8200FC7215 /* tiles.png */,
 				544B7647166B6B3000FC7215 /* CloseNormal.png */,
 				544B7649166B6B3000FC7215 /* CloseSelected.png */,
 				544B764B166B6B3000FC7215 /* Default.png */,
@@ -1585,6 +1591,8 @@
 				544B765A166B6B3000FC7215 /* Icon@2x.png in Resources */,
 				544B765C166B6B3000FC7215 /* iTunesArtwork in Resources */,
 				544B76EE166B6B3000FC7215 /* ChangeLog in Resources */,
+				544B78DF166B6B8200FC7215 /* tilemap.tmx in Resources */,
+				544B78E0166B6B8200FC7215 /* tiles.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
