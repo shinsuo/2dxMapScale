@@ -26,12 +26,15 @@ public:
 private:
     cocos2d::CCTMXTiledMap *m_pTileMap;
     
-    float m_CurDistance;
-    float m_BeganDistance;
-    float m_LastScale;
-    cocos2d::CCPoint m_LastPoint;
+    float m_curDistance;
+    float m_beganDistance;
+    float m_lastScale;
     
-    cocos2d::CCSize m_WinSize;
+    cocos2d::CCPoint m_beganPoint;
+    cocos2d::CCPoint m_curPoint;
+    cocos2d::CCPoint m_lastPoint;
+    
+    cocos2d::CCSize m_winSize;
     
     cocos2d::CCSize getMapSize();
     bool isAllowMove(const cocos2d::CCPoint &pt);

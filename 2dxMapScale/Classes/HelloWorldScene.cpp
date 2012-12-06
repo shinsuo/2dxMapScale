@@ -4,7 +4,7 @@
 using namespace cocos2d;
 using namespace CocosDenshion;
 
-static float MINSCALE = 0.5;
+static float MINSCALE = 1;
 static float MAXSCALE = 2;
 
 CCScene* HelloWorld::scene()
@@ -82,8 +82,7 @@ bool HelloWorld::init()
     CCLog("%f,%f--",m_pTileMap->getMapSize().width*m_pTileMap->getTileSize().width,m_pTileMap->getMapSize().height*m_pTileMap->getTileSize().height);
 //    m_pTileMap->setPosition(0, 0);
 //    m_pTileMap->setAnchorPoint(CCPointZero);
-    m_WinSize = CCDirector::sharedDirector()->getWinSize();
-    
+    m_winSize = CCDirector::sharedDirector()->getWinSize();
     
     
     return true;
@@ -92,15 +91,14 @@ bool HelloWorld::init()
 #pragma mark Touch
 void HelloWorld::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
 {
-    
-    
     switch (pTouches->count()) {
         case 1:
-            this->m_LastPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
+            this->m_lastPoint = this->m_pTileMap->getPosition();
+            this->m_beganPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
             break;
         case 2:
         {
-            this->m_LastScale = m_pTileMap->getScale();
+            this->m_lastScale = m_pTileMap->getScale();
             
             CCSetIterator iter;
             CCPoint pt[2];
@@ -110,7 +108,7 @@ void HelloWorld::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
                 pt[i++] = touch->getLocation();
             }
             
-            this->m_BeganDistance = ccpDistance(pt[0],pt[1]);
+            this->m_beganDistance = ccpDistance(pt[0],pt[1]);
         }
             
             break;
@@ -125,8 +123,8 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
         case 1:
         {
             CCPoint curPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
-            CCPoint translation = ccpSub(this->m_LastPoint,curPoint);
-            CCPoint newPos = ccpSub(m_pTileMap->getPosition(), translation);
+            CCPoint translation = ccpSub(curPoint,this->m_beganPoint);
+            CCPoint newPos = ccpAdd(this->m_lastPoint, translation);
             if (this->isAllowMove(newPos)) {
                 m_pTileMap->setPosition(newPos);
             }
@@ -144,18 +142,20 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
                 pt[i++] = touch->getLocation();
             }
             
-            this->m_CurDistance = ccpDistance(pt[0],pt[1]);
+            this->m_curDistance = ccpDistance(pt[0],pt[1]);
             
-            float changedScale = this->m_CurDistance/this->m_BeganDistance;
-            float nowScale = this->m_LastScale - 1 + changedScale;
-            nowScale = MIN(nowScale,MINSCALE);
-            nowScale = MAX(nowScale,MAXSCALE);
+            float changedScale = this->m_curDistance/this->m_beganDistance;
+            float nowScale = this->m_lastScale - 1 + changedScale;
+
+            nowScale = MAX(nowScale,MINSCALE);
+            nowScale = MIN(nowScale,MAXSCALE);
             
-            if (this->m_LastScale > nowScale) {
-                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_LastScale - nowScale)/(this->m_LastScale -1)));
+            if (this->m_lastScale > nowScale) {
+                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_lastScale - nowScale)/(this->m_lastScale -1)));
                 if (this->isAllowMove(newPos)) {
                     m_pTileMap->setPosition(newPos);
                 }
+                
             }
             m_pTileMap->setScale(nowScale);
             
@@ -168,8 +168,8 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
 
 bool HelloWorld::isAllowMove(const CCPoint &pt)
 {
-    float x = m_WinSize.width - m_pTileMap->getTileSize().width*m_pTileMap->getMapSize().width*m_pTileMap->getScale();
-    float y = m_WinSize.height - m_pTileMap->getTileSize().height*m_pTileMap->getMapSize().height*m_pTileMap->getScale();
+    float x = m_winSize.width - m_pTileMap->getTileSize().width*m_pTileMap->getMapSize().width*m_pTileMap->getScale();
+    float y = m_winSize.height - m_pTileMap->getTileSize().height*m_pTileMap->getMapSize().height*m_pTileMap->getScale();
     float width = abs(x);
     float height = abs(y);
     
