@@ -29,12 +29,13 @@ private:
     float m_CurDistance;
     float m_BeganDistance;
     float m_LastScale;
+    float m_CurScale;
     cocos2d::CCPoint m_LastPoint;
     
     cocos2d::CCSize m_WinSize;
     
     cocos2d::CCSize getMapSize();
-    bool isAllowMove(const cocos2d::CCPoint &pt);
+    bool isAllowMove(const cocos2d::CCPoint &pt,float nowScale);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

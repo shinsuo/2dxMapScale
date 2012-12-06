@@ -78,6 +78,7 @@ bool HelloWorld::init()
     
     m_pTileMap = CCTMXTiledMap::create("tilemap.tmx");
     this->addChild(m_pTileMap);
+    m_pTileMap->setScale(0.5);
     CCLog("pos:%f,%f,anchor:%f,%f",m_pTileMap->getPositionX(),m_pTileMap->getPositionY(),m_pTileMap->getAnchorPoint().x,m_pTileMap->getAnchorPoint().y);
     CCLog("%f,%f--",m_pTileMap->getMapSize().width*m_pTileMap->getTileSize().width,m_pTileMap->getMapSize().height*m_pTileMap->getTileSize().height);
 //    m_pTileMap->setPosition(0, 0);
@@ -111,6 +112,7 @@ void HelloWorld::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
             }
             
             this->m_BeganDistance = ccpDistance(pt[0],pt[1]);
+            this->m_CurDistance = m_BeganDistance;
         }
             
             break;
@@ -127,11 +129,11 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             CCPoint curPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
             CCPoint translation = ccpSub(this->m_LastPoint,curPoint);
             CCPoint newPos = ccpSub(m_pTileMap->getPosition(), translation);
-            if (this->isAllowMove(newPos)) {
+            if (this->isAllowMove(newPos,m_pTileMap->getScale())) {
                 m_pTileMap->setPosition(newPos);
+            }else{
+                this->m_LastPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
             }
-            
-            
         }
             break;
         case 2:
@@ -148,17 +150,20 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             
             float changedScale = this->m_CurDistance/this->m_BeganDistance;
             float nowScale = this->m_LastScale - 1 + changedScale;
-            nowScale = MIN(nowScale,MINSCALE);
-            nowScale = MAX(nowScale,MAXSCALE);
+            nowScale = MIN(nowScale,MAXSCALE);
+            nowScale = MAX(nowScale,MINSCALE);
+            
             
             if (this->m_LastScale > nowScale) {
-                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_LastScale - nowScale)/(this->m_LastScale -1)));
-                if (this->isAllowMove(newPos)) {
+                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_LastScale - nowScale)/(this->m_LastScale -MINSCALE)));
+                
+                CCLog("scale:%f--newPos:%f,%f--%d",nowScale,m_pTileMap->getPositionX(),m_pTileMap->getPositionY(),isAllowMove(newPos, nowScale));
+                if (isAllowMove(newPos,nowScale)) {
                     m_pTileMap->setPosition(newPos);
                 }
             }
-            m_pTileMap->setScale(nowScale);
             
+            m_pTileMap->setScale(nowScale);
         }
             break;
         default:
@@ -166,13 +171,16 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     }
 }
 
-bool HelloWorld::isAllowMove(const CCPoint &pt)
+bool HelloWorld::isAllowMove(const CCPoint &pt,float nowScale)
 {
-    float x = m_WinSize.width - m_pTileMap->getTileSize().width*m_pTileMap->getMapSize().width*m_pTileMap->getScale();
-    float y = m_WinSize.height - m_pTileMap->getTileSize().height*m_pTileMap->getMapSize().height*m_pTileMap->getScale();
+    float scale = m_pTileMap->getScale();//nowScale; //
+    float x = m_WinSize.width - m_pTileMap->getTileSize().width*m_pTileMap->getMapSize().width*scale;
+    float y = m_WinSize.height - m_pTileMap->getTileSize().height*m_pTileMap->getMapSize().height*scale;
     float width = abs(x);
     float height = abs(y);
     
+    
+    CCLog("isallow:%f,%f,%f,%f",x,y,width,height);
     
     CCRect rect = CCRectMake(x, y, width, height);
     return (pt.x > rect.origin.x && pt.x < rect.origin.x+rect.size.width &&
