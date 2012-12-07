@@ -4,8 +4,8 @@
   <image source="tiles.png" width="128" height="128"/>
  </tileset>
  <layer name="Tile Layer 1" width="24" height="16">
-  <data encoding="base64" compression="zlib">
-   eJy1k4sKgCAMRa+10v7/hytYdFmbWahwYImc0R4AUAZxHtE4d6aQ982fPhL5p06wPzn+WbHf9r4lhxj/5RDFulvzcF24/uyuUcvJPb7q4/WgJY/g+S/sF+M/WZRV4ThiQTw3di9yg8/Dc9n6RLv4tk+R36tPtIsluKvx5e0fEu65HxEL7vkYEYP6kDvH28EOx9UIGQ==
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA7WTiwqAIAxFZ820///hECaOy+YjNDiwJM5sDyKifIjysMRpM1l5R/6wiOe/NqH9wfDfAr7j+UwOBn91sIDu2Ty6Lrr+2t2jl1P3uNbH6gE6X8HKhXfH+uh/iMIj1Lj6H4NI/tzgXiTHMcJyYX28XRztk+e36uPtYnbOeqx8+4dAbe5PxExtPk7EpPqQNsdllj+BUmn2AAYAAA==
   </data>
  </layer>
 </map>

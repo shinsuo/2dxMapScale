@@ -4,7 +4,7 @@
 using namespace cocos2d;
 using namespace CocosDenshion;
 
-static float MINSCALE = 1;
+static float MINSCALE = 0.5;
 static float MAXSCALE = 2;
 
 CCScene* HelloWorld::scene()
@@ -74,15 +74,18 @@ bool HelloWorld::init()
     // add the sprite as a child to this layer
     this->addChild(pSprite, 0);
     //*/
+    m_winSize = CCDirector::sharedDirector()->getWinSize();
     this->setTouchEnabled(1);
-    
     m_pTileMap = CCTMXTiledMap::create("tilemap.tmx");
     this->addChild(m_pTileMap);
+    m_pTileMap->setAnchorPoint(CCPoint(0.5,0.5));
+    m_pTileMap->setScale(MINSCALE);
+    m_pTileMap->setPosition(CCPoint(m_winSize.width/2, m_winSize.height/2));
     CCLog("pos:%f,%f,anchor:%f,%f",m_pTileMap->getPositionX(),m_pTileMap->getPositionY(),m_pTileMap->getAnchorPoint().x,m_pTileMap->getAnchorPoint().y);
     CCLog("%f,%f--",m_pTileMap->getMapSize().width*m_pTileMap->getTileSize().width,m_pTileMap->getMapSize().height*m_pTileMap->getTileSize().height);
 //    m_pTileMap->setPosition(0, 0);
 //    m_pTileMap->setAnchorPoint(CCPointZero);
-    m_winSize = CCDirector::sharedDirector()->getWinSize();
+    
     
     
     return true;
