@@ -154,7 +154,7 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             nowScale = MIN(nowScale,MAXSCALE);
             
             if (this->m_lastScale > nowScale) {
-                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_lastScale - nowScale)/(this->m_lastScale -1)));
+                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_lastScale - nowScale)/(this->m_lastScale -MINSCALE)));
                 if (this->isAllowMove(newPos)) {
                     m_pTileMap->setPosition(newPos);
                 }
