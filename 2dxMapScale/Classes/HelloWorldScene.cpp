@@ -127,6 +127,9 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             CCPoint newPos = ccpAdd(this->m_lastPoint, translation);
             if (this->isAllowMove(newPos)) {
                 m_pTileMap->setPosition(newPos);
+            }else{
+                this->m_lastPoint = this->m_pTileMap->getPosition();
+                this->m_beganPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
             }
             
             
