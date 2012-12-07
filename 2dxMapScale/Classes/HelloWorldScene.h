@@ -26,10 +26,13 @@ public:
 private:
     cocos2d::CCTMXTiledMap *m_pTileMap;
     
+    float m_curAnchorPoint;
+    
     float m_curDistance;
     float m_beganDistance;
     float m_lastScale;
     
+    cocos2d::CCPoint m_centerPoint;
     cocos2d::CCPoint m_beganPoint;
     cocos2d::CCPoint m_curPoint;
     cocos2d::CCPoint m_lastPoint;

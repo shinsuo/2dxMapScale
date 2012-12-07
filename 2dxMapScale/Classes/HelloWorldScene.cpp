@@ -4,7 +4,7 @@
 using namespace cocos2d;
 using namespace CocosDenshion;
 
-static float MINSCALE = 0.5;
+static float MINSCALE = 1;
 static float MAXSCALE = 2;
 
 CCScene* HelloWorld::scene()
@@ -75,12 +75,14 @@ bool HelloWorld::init()
     this->addChild(pSprite, 0);
     //*/
     m_winSize = CCDirector::sharedDirector()->getWinSize();
+    m_centerPoint = CCPoint(m_winSize.width/2,m_winSize.height/2);
     this->setTouchEnabled(1);
     m_pTileMap = CCTMXTiledMap::create("tilemap.tmx");
     this->addChild(m_pTileMap);
-    m_pTileMap->setAnchorPoint(CCPoint(0.5,0.5));
+    m_curAnchorPoint = 0.5;
+    m_pTileMap->setAnchorPoint(CCPoint(m_curAnchorPoint,m_curAnchorPoint));
     m_pTileMap->setScale(MINSCALE);
-    m_pTileMap->setPosition(CCPoint(m_winSize.width/2, m_winSize.height/2));
+    m_pTileMap->setPosition(m_centerPoint);
     CCLog("pos:%f,%f,anchor:%f,%f",m_pTileMap->getPositionX(),m_pTileMap->getPositionY(),m_pTileMap->getAnchorPoint().x,m_pTileMap->getAnchorPoint().y);
     CCLog("%f,%f--",m_pTileMap->getMapSize().width*m_pTileMap->getTileSize().width,m_pTileMap->getMapSize().height*m_pTileMap->getTileSize().height);
 //    m_pTileMap->setPosition(0, 0);
@@ -125,6 +127,7 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     switch (pTouches->count()) {
         case 1:
         {
+            CCLog("ccTouchesMoved");
             CCPoint curPoint = ((CCTouch *)pTouches->anyObject())->getLocation();
             CCPoint translation = ccpSub(curPoint,this->m_beganPoint);
             CCPoint newPos = ccpAdd(this->m_lastPoint, translation);
@@ -157,7 +160,8 @@ void HelloWorld::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             nowScale = MIN(nowScale,MAXSCALE);
             
             if (this->m_lastScale > nowScale) {
-                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(m_pTileMap->getPosition()), ccpLength(m_pTileMap->getPosition())*(this->m_lastScale - nowScale)/(this->m_lastScale -MINSCALE)));
+                CCPoint temp = ccpSub(m_pTileMap->getPosition(), m_centerPoint);
+                CCPoint newPos = ccpSub(m_pTileMap->getPosition(), ccpMult(ccpNormalize(temp), /*ccpLength(m_pTileMap->getPosition())*/ccpDistance(m_pTileMap->getPosition(), m_centerPoint)*(this->m_lastScale - nowScale)/(this->m_lastScale -MINSCALE)));
                 if (this->isAllowMove(newPos)) {
                     m_pTileMap->setPosition(newPos);
                 }
@@ -178,6 +182,9 @@ bool HelloWorld::isAllowMove(const CCPoint &pt)
     float y = m_winSize.height - m_pTileMap->getTileSize().height*m_pTileMap->getMapSize().height*m_pTileMap->getScale();
     float width = abs(x);
     float height = abs(y);
+    
+    x += m_centerPoint.x + width/2;
+    y += m_centerPoint.y + height/2;
     
     
     CCRect rect = CCRectMake(x, y, width, height);
